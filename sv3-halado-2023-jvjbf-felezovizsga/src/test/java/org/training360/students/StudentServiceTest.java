@@ -8,8 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -57,6 +59,19 @@ class StudentServiceTest {
 
     @Test
     void findStudentsWithMoreGradesThan() {
-
+        student.addGradeWithSubject("Math", 2);
+        student.addGradeWithSubject("Math", 5);
+        student.addGradeWithSubject("History", 5);
+        Student student2 = new Student("Jane", LocalDate.of(1992, 1,4));
+        student2.addGradeWithSubject("Math", 4);
+        student2.addGradeWithSubject("Math", 3);
+        student2.addGradeWithSubject("History", 5);
+        student2.addGradeWithSubject("History", 2);
+        when(repository.findAllStudents()).thenReturn(List.of(student, student2));
+        List<Student> students = service.findStudentsWithMoreGradesThan(2);
+        assertThat(students)
+                .hasSize(2)
+                .extracting(Student::getName)
+                .contains("john", "Jane");
     }
 }
