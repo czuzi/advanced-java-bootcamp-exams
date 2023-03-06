@@ -82,14 +82,14 @@ public class BandsMusiciansRepository {
         }
     }
 
-//    public List<Band> findBandsWithMusicianName(String name) {
-//        EntityManager em = factory.createEntityManager();
-//        try {
-//            return em.createQuery("select b from Band b left join fetch b.musicians m where :name member of m.name", Band.class)
-//                    .setParameter("name", name)
-//                    .getResultList();
-//        } finally {
-//            em.close();
-//        }
-//    }
+    public List<Band> findBandsWithMusicianName(String name) {
+        EntityManager em = factory.createEntityManager();
+        try {
+            return em.createQuery("select b from Band b left join fetch b.musicians m where m.name like :name", Band.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
