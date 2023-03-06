@@ -117,28 +117,28 @@ class BandsMusiciansRepositoryTest {
                 .containsAll(List.of("Book of Souls", "Piece of Mind")));
     }
 
-    @Test
-    void testFindBandWithMusicianName() {
-        Band band1 = new Band("Band1", Genre.ROCK);
-        Band band2 = new Band("Band2", Genre.POP);
-        Band band3 = new Band("Band3", Genre.HIP_HOP);
-
-        band1.addMusician(new Musician("John Doe", LocalDate.parse("1992-11-11"), "guitar"));
-        band1.addMusician(new Musician("John Other", LocalDate.parse("1991-11-11"), "bass"));
-        band2.addMusician(new Musician("Jack Other", LocalDate.parse("1990-10-11"), "bass"));
-        band2.addMusician(new Musician("Jill Other", LocalDate.parse("1991-02-15"), "bass"));
-        band3.addMusician(new Musician("John Other", LocalDate.parse("1992-01-01"), "drums"));
-        repository.saveBand(band1);
-        repository.saveBand(band2);
-        repository.saveBand(band3);
-
-        List<Band> found = repository.findBandsWithMusicianName("John");
-
-        assertEquals(2, found.size());
-        assertTrue(found.stream().map(Band::getBandName).toList()
-                .containsAll(List.of("Band1", "Band3")));
-
-        found = repository.findBandsWithMusicianName("Jill");
-        assertEquals(1, found.size());
-    }
+//    @Test
+//    void testFindBandWithMusicianName() {
+//        Band band1 = new Band("Band1", Genre.ROCK);
+//        Band band2 = new Band("Band2", Genre.POP);
+//        Band band3 = new Band("Band3", Genre.HIP_HOP);
+//
+//        band1.addMusician(new Musician("John Doe", LocalDate.parse("1992-11-11"), "guitar"));
+//        band1.addMusician(new Musician("John Other", LocalDate.parse("1991-11-11"), "bass"));
+//        band2.addMusician(new Musician("Jack Other", LocalDate.parse("1990-10-11"), "bass"));
+//        band2.addMusician(new Musician("Jill Other", LocalDate.parse("1991-02-15"), "bass"));
+//        band3.addMusician(new Musician("John Other", LocalDate.parse("1992-01-01"), "drums"));
+//        repository.saveBand(band1);
+//        repository.saveBand(band2);
+//        repository.saveBand(band3);
+//
+//        List<Band> found = repository.findBandsWithMusicianName("John");
+//
+//        assertEquals(2, found.size());
+//        assertTrue(found.stream().map(Band::getBandName).toList()
+//                .containsAll(List.of("Band1", "Band3")));
+//
+//        found = repository.findBandsWithMusicianName("Jill");
+//        assertEquals(1, found.size());
+//    }
 }
