@@ -34,7 +34,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void saveNewStudent() {
+    void testSaveNewStudent() {
         when(repository.saveNewStudent(any()))
                 .thenReturn((student));
         assertEquals("john", service.saveNewStudent(student).getName());
@@ -42,7 +42,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void calculateStudentAverageBySubject() {
+    void testCalculateStudentAverageBySubject() {
         student.addGradeWithSubject("Math", 2);
         student.addGradeWithSubject("Math", 5);
         student.addGradeWithSubject("History", 5);
@@ -58,7 +58,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void findStudentsWithMoreGradesThan() {
+    void testFindStudentsWithMoreGradesThan() {
         student.addGradeWithSubject("Math", 2);
         student.addGradeWithSubject("Math", 5);
         student.addGradeWithSubject("History", 5);

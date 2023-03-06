@@ -18,13 +18,13 @@ class StudentTest {
         student.addGradeWithSubject("History", 5);
     }
     @Test
-    void addGradeWithSubject() {
+    void testAddGradeWithSubject() {
         assertEquals(2, student.getGradesOfSubject("Math").size());
         assertEquals(2, student.getSubjectAndGrades().size());
     }
 
     @Test
-    void countNumberOfGrades() {
+    void testCountNumberOfGrades() {
         assertEquals(3, student.countNumberOfGrades());
     }
 }
