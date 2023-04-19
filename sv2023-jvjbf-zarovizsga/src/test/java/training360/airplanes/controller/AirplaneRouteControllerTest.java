@@ -1,117 +1,117 @@
-//package training360.airplanes.controller;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.ProblemDetail;
-//import org.springframework.test.context.jdbc.Sql;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import training360.airplanes.dtos.AirplaneDto;
-//import training360.airplanes.dtos.CreateAirplaneCommand;
-//import training360.airplanes.dtos.CreateRouteCommand;
-//import training360.airplanes.dtos.RouteDto;
-//import training360.airplanes.model.AirplaneType;
-//
-//import java.net.URI;
-//import java.time.LocalDate;
-//import java.util.List;
-//import java.util.Set;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Sql(statements = {"delete from routes", "delete from airplanes"})
-//class AirplaneRouteControllerTest {
-//
-//    @Autowired
-//    WebTestClient webClient;
-//
-//    AirplaneDto airplane;
-//
-//    ProblemDetail problem;
-//
-//    LocalDate date = LocalDate.now().plusDays(1L);
-//
-//    @BeforeEach
-//    void init() {
-//        airplane = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Lufthansa"))
-//                .exchange()
-//                .expectStatus().isCreated()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//    }
-//
-//    @Test
-//    void testSaveAirplane() {
-//        assertNotNull(airplane.getId());
-//        assertEquals(AirplaneType.BOEING_787, airplane.getAirplaneType());
-//        assertEquals("Lufthansa", airplane.getOwnerAirline());
-//        assertTrue(airplane.getRoutes().isEmpty());
-//    }
-//
-//    @Test
-//    void testSaveAirplaneWithoutAirplaneType() {
-//        AirplaneDto plane = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(null, "Lufthansa"))
-//                .exchange()
-//                .expectStatus().isCreated()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//
-//        assertNotNull(plane.getId());
-//        assertNull(plane.getAirplaneType());
-//        assertEquals("Lufthansa", plane.getOwnerAirline());
-//        assertTrue(plane.getRoutes().isEmpty());
-//    }
-//
-//    @Test
-//    void testSaveAirplaneWithoutOwnerAirline() {
-//        problem = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, null))
-//                .exchange()
-//                .expectStatus().isBadRequest()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveAirplaneWithEmptyOwnerAirline() {
-//        problem = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, ""))
-//                .exchange()
-//                .expectStatus().isBadRequest()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveRouteToAirplane() {
-//        RouteDto route = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange()
-//                .expectBody(RouteDto.class)
-//                .returnResult().getResponseBody();
-//
-//        assertNotNull(route.getId());
-//        assertEquals("Budapest", route.getDepartureCity());
-//        assertEquals("London", route.getArrivalCity());
-//        assertEquals(date, route.getDateOfFlight());
-//    }
-//
+package training360.airplanes.controller;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ProblemDetail;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import training360.airplanes.dtos.AirplaneDto;
+import training360.airplanes.dtos.CreateAirplaneCommand;
+import training360.airplanes.dtos.CreateRouteCommand;
+import training360.airplanes.dtos.RouteDto;
+import training360.airplanes.model.AirplaneType;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(statements = {"delete from routes", "delete from airplanes"})
+class AirplaneRouteControllerTest {
+
+    @Autowired
+    WebTestClient webClient;
+
+    AirplaneDto airplane;
+
+    ProblemDetail problem;
+
+    LocalDate date = LocalDate.now().plusDays(1L);
+
+    @BeforeEach
+    void init() {
+        airplane = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Lufthansa"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+    }
+
+    @Test
+    void testSaveAirplane() {
+        assertNotNull(airplane.getId());
+        assertEquals(AirplaneType.BOEING_787, airplane.getAirplaneType());
+        assertEquals("Lufthansa", airplane.getOwnerAirline());
+        assertTrue(airplane.getRoutes().isEmpty());
+    }
+
+    @Test
+    void testSaveAirplaneWithoutAirplaneType() {
+        AirplaneDto plane = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(null, "Lufthansa"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+
+        assertNotNull(plane.getId());
+        assertNull(plane.getAirplaneType());
+        assertEquals("Lufthansa", plane.getOwnerAirline());
+        assertTrue(plane.getRoutes().isEmpty());
+    }
+
+    @Test
+    void testSaveAirplaneWithoutOwnerAirline() {
+        problem = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, null))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveAirplaneWithEmptyOwnerAirline() {
+        problem = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, ""))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveRouteToAirplane() {
+        RouteDto route = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange()
+                .expectBody(RouteDto.class)
+                .returnResult().getResponseBody();
+
+        assertNotNull(route.getId());
+        assertEquals("Budapest", route.getDepartureCity());
+        assertEquals("London", route.getArrivalCity());
+        assertEquals(date, route.getDateOfFlight());
+    }
+
 //    @Test
 //    void testSaveRouteToNotFoundAirplane() {
 //        long id = airplane.getId() + 1000;
@@ -125,19 +125,19 @@
 //        assertEquals(URI.create("airplanes/not-found"), problem.getType());
 //        assertEquals("Airplane not found with id:" + id, problem.getDetail());
 //    }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithoutDepartureCity() {
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand(null, "London", LocalDate.now().plusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
+
+    @Test
+    void testSaveRouteToAirplaneWithoutDepartureCity() {
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand(null, "London", LocalDate.now().plusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
 //
 //    @Test
 //    void testSaveRouteToAirplaneWithEmptyDepartureCity() {
@@ -379,4 +379,4 @@
 //                .expectBody(ProblemDetail.class)
 //                .returnResult().getResponseBody();
 //    }
-//}
+}

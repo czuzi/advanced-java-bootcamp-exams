@@ -8,4 +8,8 @@
         <sqlFile path="create-airplanes-table.sql"
                  relativeToChangelogFile="true" />
     </changeSet>
+    <changeSet id="create-routes-table" author="Istvan Palocsay">
+        <sqlFile path="create-routes-table.sql"
+                 relativeToChangelogFile="true" />
+    </changeSet>
 </databaseChangeLog>
