@@ -18,6 +18,7 @@ public class Band {
     @Column(name = "band_name")
     private String bandName;
 
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
     @ElementCollection(targetClass = Album.class)

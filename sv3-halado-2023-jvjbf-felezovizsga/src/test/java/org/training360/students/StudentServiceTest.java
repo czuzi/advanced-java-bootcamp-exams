@@ -14,8 +14,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
@@ -31,6 +30,9 @@ class StudentServiceTest {
     @BeforeEach
     void init() {
         student = new Student("john", LocalDate.of(1989,12,4));
+        student.addGradeWithSubject("Math", 2);
+        student.addGradeWithSubject("Math", 5);
+        student.addGradeWithSubject("History", 5);
     }
 
     @Test
@@ -43,9 +45,6 @@ class StudentServiceTest {
 
     @Test
     void testCalculateStudentAverageBySubject() {
-        student.addGradeWithSubject("Math", 2);
-        student.addGradeWithSubject("Math", 5);
-        student.addGradeWithSubject("History", 5);
         when(repository.findStudentByName(anyString()))
                 .thenReturn(Optional.of(student));
         when(repository.findStudentByName("not exist")).thenReturn(Optional.empty());
@@ -59,9 +58,6 @@ class StudentServiceTest {
 
     @Test
     void testFindStudentsWithMoreGradesThan() {
-        student.addGradeWithSubject("Math", 2);
-        student.addGradeWithSubject("Math", 5);
-        student.addGradeWithSubject("History", 5);
         Student student2 = new Student("Jane", LocalDate.of(1992, 1,4));
         student2.addGradeWithSubject("Math", 4);
         student2.addGradeWithSubject("Math", 3);
@@ -73,5 +69,11 @@ class StudentServiceTest {
                 .hasSize(2)
                 .extracting(Student::getName)
                 .contains("john", "Jane");
+        List<Student> students2 = service.findStudentsWithMoreGradesThan(3);
+        assertThat(students2)
+                .hasSize(1)
+                .extracting(Student::getName)
+                .contains("Jane");
+        verify(repository, times(2)).findAllStudents();
     }
 }
