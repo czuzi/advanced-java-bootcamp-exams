@@ -1,0 +1,5 @@
+CREATE TABLE airplanes (
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   airplane_type VARCHAR(255) NOT NULL,
+   owner_airline VARCHAR(255) NOT NULL
+);
