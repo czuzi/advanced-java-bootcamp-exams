@@ -112,19 +112,19 @@ class AirplaneRouteControllerTest {
         assertEquals(date, route.getDateOfFlight());
     }
 
-//    @Test
-//    void testSaveRouteToNotFoundAirplane() {
-//        long id = airplane.getId() + 1000;
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(id))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", LocalDate.now().plusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-found"), problem.getType());
-//        assertEquals("Airplane not found with id:" + id, problem.getDetail());
-//    }
+    @Test
+    void testSaveRouteToNotFoundAirplane() {
+        long id = airplane.getId() + 1000;
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(id))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", LocalDate.now().plusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-found"), problem.getType());
+        assertEquals("Airplane not found with id:" + id, problem.getDetail());
+    }
 
     @Test
     void testSaveRouteToAirplaneWithoutDepartureCity() {
@@ -138,245 +138,245 @@ class AirplaneRouteControllerTest {
         assertEquals(URI.create("airplanes/not-valid"), problem.getType());
         assertTrue(problem.getDetail().startsWith("Validation failed"));
     }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithEmptyDepartureCity() {
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("", "London", LocalDate.now().plusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithoutArrivalCity() {
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", null, LocalDate.now().plusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithEmptyArrivalCity() {
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "", LocalDate.now().plusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithDateInThePast() {
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", LocalDate.now().minusDays(1L)))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertTrue(problem.getDetail().startsWith("Validation failed"));
-//    }
-//
-//    @Test
-//    void testSaveRouteToAirplaneWithSameDate() {
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange()
-//                .expectBody(RouteDto.class)
-//                .returnResult().getResponseBody();
-//        problem = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
-//        assertEquals("Flight is not free on " + date, problem.getDetail());
-//    }
-//
-//    @Test
-//    void testFindAllAirplanesByAirline() {
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange();
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
-//                .exchange();
-//        AirplaneDto plane = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Malév"))
-//                .exchange()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(plane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange();
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(plane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
-//                .exchange();
-//        AirplaneDto other = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Lufthansa"))
-//                .exchange()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(other.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange();
-//
-//        webClient.get()
-//                .uri("api/airplanes")
-//                .exchange()
-//                .expectBodyList(AirplaneDto.class)
-//                .hasSize(3);
-//
-//        webClient.get()
-//                .uri("api/airplanes?ownerAirline=Lufthansa")
-//                .exchange()
-//                .expectBodyList(AirplaneDto.class)
-//                .hasSize(2);
-//
-//        List<AirplaneDto> airplanes = webClient.get()
-//                .uri("api/airplanes?ownerAirline=Malév")
-//                .exchange()
-//                .expectBodyList(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//
-//        assertThat(airplanes)
-//                .hasSize(1);
-//        Set<RouteDto> routes = airplanes.get(0).getRoutes();
-//        assertThat(routes)
-//                .hasSize(2);
-//
-//        webClient.get()
-//                .uri("api/airplanes?ownerAirline=Luft")
-//                .exchange()
-//                .expectBodyList(AirplaneDto.class)
-//                .hasSize(0);
-//    }
-//
-//    @Test
-//    void testCancelFlight() {
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange()
-//                .expectBody(RouteDto.class)
-//                .returnResult().getResponseBody();
-//        RouteDto route = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
-//                .exchange()
-//                .expectBody(RouteDto.class)
-//                .returnResult().getResponseBody();
-//
-//        AirplaneDto airplaneResult = webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
-//                .exchange()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//
-//        assertThat(airplaneResult.getRoutes())
-//                .hasSize(1)
-//                .extracting(RouteDto::getDateOfFlight)
-//                .containsExactly(date);
-//    }
-//
-//    @Test
-//    void testCancelFlightWithWrongAirplane() {
-//        long wrongId = airplane.getId() + 1;
-//        problem = webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(wrongId, wrongId))
-//                .exchange()
-//                .expectStatus().isNotFound()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals("Airplane not found with id:" + wrongId, problem.getDetail());
-//    }
-//
-//    @Test
-//    void testCancelFlightWithWrongRoute() {
-//        long wrongId = airplane.getId() + 1;
-//        problem = webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), wrongId))
-//                .exchange()
-//                .expectStatus().isNotFound()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//
-//        assertEquals("Route not found with id: " + wrongId, problem.getDetail());
-//    }
-//
-//    @Test
-//    void testCancelFlightWithRouteNotBelongsToAirplane() {
-//        AirplaneDto otherPlane = webClient.post()
-//                .uri("api/airplanes")
-//                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_747, "KLM"))
-//                .exchange()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//
-//        RouteDto wrongRoute = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange().expectBody(RouteDto.class).returnResult().getResponseBody();
-//
-//        webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(otherPlane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange().expectBody(RouteDto.class).returnResult().getResponseBody();
-//
-//        problem = webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(otherPlane.getId(), wrongRoute.getId()))
-//                .exchange()
-//                .expectStatus().isNotFound()
-//                .expectBody(ProblemDetail.class).returnResult().getResponseBody();
-//
-//        assertEquals("Route not found with id: " + wrongRoute.getId(), problem.getDetail());
-//    }
-//
-//    @Test
-//    void testCancelFlightWithRouteAlreadyCanceled() {
-//        RouteDto route = webClient.post()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
-//                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
-//                .exchange()
-//                .expectBody(RouteDto.class)
-//                .returnResult().getResponseBody();
-//
-//        webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
-//                .exchange()
-//                .expectBody(AirplaneDto.class)
-//                .returnResult().getResponseBody();
-//
-//        problem = webClient.put()
-//                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
-//                .exchange()
-//                .expectStatus().isNotFound()
-//                .expectBody(ProblemDetail.class)
-//                .returnResult().getResponseBody();
-//    }
+
+    @Test
+    void testSaveRouteToAirplaneWithEmptyDepartureCity() {
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("", "London", LocalDate.now().plusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveRouteToAirplaneWithoutArrivalCity() {
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", null, LocalDate.now().plusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveRouteToAirplaneWithEmptyArrivalCity() {
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "", LocalDate.now().plusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveRouteToAirplaneWithDateInThePast() {
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", LocalDate.now().minusDays(1L)))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertTrue(problem.getDetail().startsWith("Validation failed"));
+    }
+
+    @Test
+    void testSaveRouteToAirplaneWithSameDate() {
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange()
+                .expectBody(RouteDto.class)
+                .returnResult().getResponseBody();
+        problem = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals(URI.create("airplanes/not-valid"), problem.getType());
+        assertEquals("Flight is not free on " + date, problem.getDetail());
+    }
+
+    @Test
+    void testFindAllAirplanesByAirline() {
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange();
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
+                .exchange();
+        AirplaneDto plane = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Malév"))
+                .exchange()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(plane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange();
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(plane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
+                .exchange();
+        AirplaneDto other = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_787, "Lufthansa"))
+                .exchange()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(other.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange();
+
+        webClient.get()
+                .uri("api/airplanes")
+                .exchange()
+                .expectBodyList(AirplaneDto.class)
+                .hasSize(3);
+
+        webClient.get()
+                .uri("api/airplanes?ownerAirline=Lufthansa")
+                .exchange()
+                .expectBodyList(AirplaneDto.class)
+                .hasSize(2);
+
+        List<AirplaneDto> airplanes = webClient.get()
+                .uri("api/airplanes?ownerAirline=Malév")
+                .exchange()
+                .expectBodyList(AirplaneDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(airplanes)
+                .hasSize(1);
+        Set<RouteDto> routes = airplanes.get(0).getRoutes();
+        assertThat(routes)
+                .hasSize(2);
+
+        webClient.get()
+                .uri("api/airplanes?ownerAirline=Luft")
+                .exchange()
+                .expectBodyList(AirplaneDto.class)
+                .hasSize(0);
+    }
+
+    @Test
+    void testCancelFlight() {
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange()
+                .expectBody(RouteDto.class)
+                .returnResult().getResponseBody();
+        RouteDto route = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date.plusDays(1L)))
+                .exchange()
+                .expectBody(RouteDto.class)
+                .returnResult().getResponseBody();
+
+        AirplaneDto airplaneResult = webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
+                .exchange()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(airplaneResult.getRoutes())
+                .hasSize(1)
+                .extracting(RouteDto::getDateOfFlight)
+                .containsExactly(date);
+    }
+
+    @Test
+    void testCancelFlightWithWrongAirplane() {
+        long wrongId = airplane.getId() + 1;
+        problem = webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(wrongId, wrongId))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals("Airplane not found with id:" + wrongId, problem.getDetail());
+    }
+
+    @Test
+    void testCancelFlightWithWrongRoute() {
+        long wrongId = airplane.getId() + 1;
+        problem = webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), wrongId))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+
+        assertEquals("Route not found with id: " + wrongId, problem.getDetail());
+    }
+
+    @Test
+    void testCancelFlightWithRouteNotBelongsToAirplane() {
+        AirplaneDto otherPlane = webClient.post()
+                .uri("api/airplanes")
+                .bodyValue(new CreateAirplaneCommand(AirplaneType.BOEING_747, "KLM"))
+                .exchange()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+
+        RouteDto wrongRoute = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange().expectBody(RouteDto.class).returnResult().getResponseBody();
+
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(otherPlane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange().expectBody(RouteDto.class).returnResult().getResponseBody();
+
+        problem = webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(otherPlane.getId(), wrongRoute.getId()))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class).returnResult().getResponseBody();
+
+        assertEquals("Route not found with id: " + wrongRoute.getId(), problem.getDetail());
+    }
+
+    @Test
+    void testCancelFlightWithRouteAlreadyCanceled() {
+        RouteDto route = webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes").build(airplane.getId()))
+                .bodyValue(new CreateRouteCommand("Budapest", "London", date))
+                .exchange()
+                .expectBody(RouteDto.class)
+                .returnResult().getResponseBody();
+
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
+                .exchange()
+                .expectBody(AirplaneDto.class)
+                .returnResult().getResponseBody();
+
+        problem = webClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/airplanes/{id}/routes/{routeId}").build(airplane.getId(), route.getId()))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .returnResult().getResponseBody();
+    }
 }

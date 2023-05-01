@@ -1,16 +1,15 @@
 package training360.airplanes.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import training360.airplanes.model.AirplaneType;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAirplaneCommand {
     private AirplaneType airplaneType;
-    @NotBlank
+    @NotBlank(message = "Validation failed")
     private String ownerAirline;
 }
